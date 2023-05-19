@@ -11,12 +11,13 @@ void  Dictionary::fileChoice() {
 		cout << "Enter '2' to open New dictionary" << endl;
 		cout << "Enter '3' Exit" << endl;
 
-		
-		inputOption = inputCheck(4);
+		int optionLimit = 4;
+		inputOption = inputCheck(optionLimit);
 		switch (inputOption) {
 		case 1:
 			cout << "Loading dictionary....." << endl << endl;
 			TextFileReader("dictionary_2023S1.txt");
+			looping = false;
 			break;
 		case 2:
 			while (loadedDictionary == false) {
@@ -24,6 +25,7 @@ void  Dictionary::fileChoice() {
 				if (dictionarynameInput.length() >= 4 && dictionarynameInput.substr(dictionarynameInput.length() - 4) == ".txt") {
 					cout << "Loading dictionary....." << endl << endl;
 					TextFileReader(dictionarynameInput);
+					looping = false;
 				}
 				// If no dictionary is loaded the task should just print ‘No dictionary loaded’ and return to the menu
 				else {
@@ -40,7 +42,7 @@ void  Dictionary::fileChoice() {
 		}
 	}
 };
-int inputCheck(int upperLimit) {
+int Dictionary::inputCheck(int upperLimit) {
 	bool correctInput = false;
 	int input;
 	while (correctInput == false) {
@@ -70,7 +72,7 @@ void Dictionary::TextFileReader(string fileName) {
 	try {
 		string wordLine;
 		ifstream readFile;
-		int count = 1;
+		int count = 0;
 		string name;
 		string type;
 		string definition;
@@ -98,8 +100,8 @@ void Dictionary::TextFileReader(string fileName) {
 					Dictionary.push_back(newWord);
 					count++;
 				}
-				
-			}			
+
+			}
 			//closed the file after use and changes the booles loaded dictionary to true so that the program can continue to the menu 
 			readFile.close();
 			cout << "Dictionary has been loaded" << endl << endl;
@@ -129,8 +131,8 @@ void Dictionary::searchWord() {
 		string wordName = word.getWordName();
 
 		if (wordName.compare(searchedWord) == 0) {
-			string wordType = word.getWordDefinition();
-			string wordDefinition = word.getWordType();
+			string wordDefinition = word.getWordDefinition();
+			string wordType = word.getWordType();
 			// i used two function I created to make sure the displayed type is shown as per the requirement of the second task, 
 			string type = typeConverter(wordType);
 			// i aslo desided to seperate the definitions becasue if there were multiple for one word. 
@@ -193,7 +195,7 @@ string Dictionary::capitalRemover(string word) {
 	return lowerWord;
 };
 void Dictionary::moreZZZFinder() {
-	cout << endl << "Finding words that has more than three 'z'...;" << endl;
+	cout << endl << "Finding words that has more than three 'z'..." << endl;
 	// again used the for loop to got throught all the word name and count the number of z it has. I then used a if statement which states that any word with more than three counts of z letter need to be printed 
 	// I wamted to used the same function but the function is a return type and it only allows parameter loaded
 	for (Word word : Dictionary) {
@@ -231,9 +233,9 @@ void Dictionary::addWord() {
 	cout << endl << "What type of word is it?" << endl;
 	cout << "Enter '1' for Noun" << endl << "Enter '2' for Verb" << endl << "Enter '3' for Adverb" << endl << "Enter '4' for Adjective" << endl;
 	cout << "Enter '5' for Preposition" << endl << "Enter '6' for Miscellaneous" << endl << "Enter '7' for Proper Noun" << endl << "Enter '8' for Noun and Verb" << endl;
+	int optionLimit = 9;
+	typeOptionInput = inputCheck(optionLimit);
 
-	typeOptionInput = inputCheck(9);
-	
 
 	switch (typeOptionInput) {
 	case 1:
@@ -304,11 +306,11 @@ void Dictionary::addWord() {
 
 string Dictionary::getLettersOnly() {
 	string nameInput;
-	getline(cin >> ws, nameInput);
-
-	bool onlyLetter = true;
-	nameInput.erase(remove_if(nameInput.begin(), nameInput.end(), ::isspace), nameInput.end());
+	
 	while (true) {
+		bool onlyLetter = true;
+		getline(cin >> ws, nameInput);
+		nameInput.erase(remove_if(nameInput.begin(), nameInput.end(), ::isspace), nameInput.end());
 		for (char n : nameInput) {
 			if (!isalpha(n) && n != '-') {
 				onlyLetter = false;

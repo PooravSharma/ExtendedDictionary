@@ -8,13 +8,14 @@ using namespace std;
 #include <sstream>
 #include <string>
 #include <limits>
+#include <algorithm>
 #include "Word.h"
 
 class Dictionary
 {
 protected:
 	vector <Word> Dictionary;
-	int wordCount;
+	int wordCount =0;
 	bool loadedDictionary = false;	
 
 public:	
@@ -39,7 +40,6 @@ public:
 	void TextFileWriter(string newFileName);
 
 	string getLettersOnly();
-
 };
 
 #endif

@@ -23,10 +23,10 @@ public:
 		return name;
 	}
 	string getWordType() {
-		return name;
+		return type;
 	}
 	string getWordDefinition() {
-		return name;
+		return definition;
 	}
 
 
