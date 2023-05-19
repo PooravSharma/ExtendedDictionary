@@ -1,10 +1,6 @@
 // Assignment_2.cpp : This file contains the 'main' function. Program execution begins and ends there.
 using namespace std;
-#include <fstream>
-#include <iostream>
-#include <vector>
-#include <string>
-#include <sstream>
+
 #include "ExtendedDictionary.h"
 int main()
 {
@@ -13,13 +9,18 @@ int main()
 	int inputOption;
 
 	cout << "Hi!! Input the name for the dictionary you want to load." << endl;
-
+	dictionary.fileChoice();
 
 	while (loopingMenu) {
 		cout << endl << "Enter '1' to search for a word in the dictionary" << endl;
 		cout << "Enter '2' to print all the words from the dictonary that contains more than three 'z' letters" << endl;
 		cout << "Enter '3' to add a word to the dictionary and save updated dictionary" << endl;
-		cout << "Enter '4' to Exit program" << endl;
+		cout << "Enter '4' to list all words in the dictionary that are palindromes. e.g .”civic”" << endl;
+		cout << "Enter '5' to find the all the Rhyming words of the word you enter" << endl;
+		cout << "Enter '6' to play Guess the Fourth word of a word's definition" << endl;
+		cout << "Enter '7' to Cheat at Searchdle" << endl;
+		cout << "Enter '8' to Open different dictionary" << endl;
+		cout << "Enter '9' to Exit program" << endl;
 
 
 		cin >> inputOption;
@@ -38,7 +39,22 @@ int main()
 			//Task 04 method
 			dictionary.addWord();
 			break;
-		case 4:
+		case 4:			
+			dictionary.addWord();
+			break;
+		case 5:
+			dictionary.addWord();
+			break;
+		case 6:
+			dictionary.addWord();
+			break;
+		case 7:
+			dictionary.addWord();
+			break;
+		case 8:
+			dictionary.fileChoice();
+			break;
+		case 9:
 			//to exit the menu loop and end he program
 			loopingMenu = false;
 			break;
@@ -47,13 +63,3 @@ int main()
 	}
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file

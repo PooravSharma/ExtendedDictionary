@@ -14,12 +14,10 @@ class Dictionary
 {
 protected:
 	vector <Word> Dictionary;
-
-public:
-	string dictionarynameInput;
 	int wordCount;
-	bool loadedDictionary = false;
+	bool loadedDictionary = false;	
 
+public:	
 	void fileChoice();
 
 	void TextFileReader(string fileName);
@@ -30,7 +28,7 @@ public:
 
 	void addWord();
 
-	int inputCheck(int input);
+	int inputCheck(int upperLimit);
 
 	string capitalRemover(string word);
 
@@ -39,6 +37,8 @@ public:
 	string definitionSeperator(string definition);
 
 	void TextFileWriter(string newFileName);
+
+	string getLettersOnly();
 
 };
 
