@@ -6,8 +6,8 @@ using namespace std;
 
 class Word
 {
-private: 
-	string name;	
+private:
+	string name;
 	string type;
 	string definition;
 

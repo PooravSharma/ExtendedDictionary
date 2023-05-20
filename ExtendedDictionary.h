@@ -1,11 +1,12 @@
 #ifndef EXTENDEDDICTIONSRY_H
 #define EXTENDEDDICTIONSRY_H 
 #include "Dictionary.h"
+#include <unordered_set>
 class ExtendedDictionary : public Dictionary
 {
 private:
 	int hightScore = 0;
-	int mysterywordLength=0;
+	int mysterywordLength = 0;
 	string yellowLetters;
 	string greyLetters;
 	vector <int> positionNumber;
@@ -100,40 +101,61 @@ public:
 		setmysteryLength(0);
 		greyLetters = "";
 		yellowLetters = "";
-		greenLetters ="";
+		greenLetters = "";
 		positionNumber.clear();
 		remainingPostion = getmysteryLength();
 		parameter = false;
-		cout << "Welcome to the Searchdle cheat" << endl;
+		cout << endl << "Welcome to the Searchdle cheat" << endl;
 		bool looping = true;
 		int inputOption;
 		int inputExit;
 		bool exiting = true;
 
 		while (looping) {
-			cout << endl << "Note the list of potential words will update as you fill out the parameters below" << endl;
-			cout << endl << "Enter '1' to set the number of letters in the ‘mystery’ word" << " (*Length of the Word)" << endl;
+			cout << endl << endl << "Note the list of potential words will update as you fill out the parameters below" << endl;
+			cout << endl << "Enter '1' to set the number of letters in the 'mystery' word" << " (*Length of the Word)" << endl;
 			cout << "Enter '2' to enter letters that the 'mystery' word DOES NOT contain" << " (*Note: The GREY letters in the game. It means that the word does not contain the letter in it.)" << endl;
 			cout << "Enter '3' to enter letters that the 'mystery' word contain SOMEWHERE" << " (*Note: The YELLOW letters in the game. It means that the word contains the letter in it but it is NOT in the correct position.)" << endl;
 			cout << "Enter '4' to enter letters that the 'mystery' word contain in the correct position" << " (*Note: The GREEN letters in the game. It means that the word contains the letter and it IS in the correct position.)" << endl;
 			cout << "Enter '5' to list all the words that meet the parameters you entered" << endl;
-			cout << "Enter '6' to Exit" << endl;
+			cout << "Enter '6' to Clear all parameters" << endl;
+			cout << "Enter '7' to Exit" << endl;
 
-			int optionLimit = 7;
+			int optionLimit = 8;
 			inputOption = inputCheck(optionLimit);
 			switch (inputOption) {
 			case 1:
 				setmysteryLength();
 				break;
 			case 2:
+				getgreyLetters();
 				break;
 			case 3:
+				getyellowLetters();
 				break;
 			case 4:
+				getgreenLetters();
 				break;
 			case 5:
+				findmysteryWords();
 				break;
 			case 6:
+				while (exiting == true) {
+					cout << endl << endl << "All the parameters you set will be Cleared. Are you sure you want to continue?" << endl;
+					cout << "Enter '1' to say YES" << endl;
+					cout << "Enter '2' to say NO" << endl;
+					inputExit = inputCheck(3);
+					if (inputExit == 1) {
+						cheatatSearchdle();
+						break;
+					}
+					if (inputExit == 2) {
+						break;
+					}
+				}
+				break;
+
+			case 7:
 
 				while (exiting == true) {
 					cout << endl << endl << "All the parameters you set will be lost. Are you sure you want to Exit?" << endl;
@@ -292,8 +314,10 @@ public:
 			int inputOption = inputCheck(optionLimit);
 			switch (inputOption) {
 			case 1:
+				looping = false;
 				break;
 			case 2:
+				looping = false;
 				change = false;
 				break;
 			}
@@ -320,9 +344,10 @@ public:
 				}
 			}
 			setmysteryLength(input);
+			remainingPostion = getmysteryLength();
 			parameter = true;
 		}
-		
+
 	}
 	void getgreyLetters() {
 		bool add = true;
@@ -340,20 +365,23 @@ public:
 		}
 		cout << ")" << endl;
 		while (looping == true) {
-			cout << "Enter '1' to Add grey letters" << endl;
+			cout << endl << "Enter '1' to Add grey letters" << endl;
 			cout << "Enter '2' to clear all Grey letters" << endl;
-			cout << "Enter '2' to Exit" << endl;
+			cout << "Enter '3' to Exit" << endl;
 
-			int optionLimit = 3;
+			int optionLimit = 4;
 			int inputOption = inputCheck(optionLimit);
 			switch (inputOption) {
 			case 1:
+				looping = false;
 				break;
 			case 2:
 				add = false;
 				deleteLetters = true;
+				looping = false;
 				break;
 			case 3:
+				looping = false;
 				add = false;
 				break;
 			}
@@ -362,28 +390,46 @@ public:
 		if (add == true) {
 			bool nooverLaps = true;
 			while (true) {
-				cout << "What are the grey letter words? (*Note: The letters that are NOT in the mystery word)" << endl;
+				cout << endl << "What are the grey letter words? (*Note: The letters that are NOT in the mystery word)" << endl;
 				cout << "Enter them without spaces. Example: ABCED" << endl;
 				newgrayLetter = getLettersOnly();
 				newgrayLetter = capitalRemover(newgrayLetter);
 				string cleanWord;
+				unordered_set<char> allLetters;
+				bool repeatingLetter = false;
 				for (char c : newgrayLetter) {
 					if (!ispunct(static_cast<unsigned char>(c))) {
 						cleanWord += c;
 					}
+					if (allLetters.count(c) > 0) {
+						repeatingLetter = true;
+						break;
+					}
+					allLetters.insert(c);
+
+				}
+				if (repeatingLetter == true) {
+					cout << endl << "Try again with out repeating letters" << endl;
+					continue;
 				}
 				newgrayLetter = cleanWord;
 				nooverLaps = checkLetters(newgrayLetter, yellowLetters);
 				nooverLaps = checkLetters(newgrayLetter, greyLetters);
-				if (nooverLaps == true) {
+				if (nooverLaps == false) {
+					greyLetters.append(newgrayLetter);
+					parameter = true;
 					break;
 				}
-				cout << endl << "The words you inputed already exists in yellowLetters or grey Letters;" << endl;
+				if (nooverLaps == true) {
+					cout << endl << "The words you inputed already exists in yellow Letters or grey Letters" << endl;
+					break;
+				}
+
 			}
-			greyLetters.append(newgrayLetter);
-			parameter = true;
+
 		}
 		if (deleteLetters == true) {
+			cout << endl << "All Grey letters cleared" << endl;
 			greyLetters = "";
 		}
 
@@ -405,7 +451,7 @@ public:
 		}
 		cout << ")" << endl;
 		while (looping == true) {
-			cout << "Enter '1' to Add yellow letters" << endl;
+			cout << endl << "Enter '1' to Add yellow letters" << endl;
 			cout << "Enter '2' to clear all Yellow letters" << endl;
 			cout << "Enter '3' to Exit" << endl;
 
@@ -413,12 +459,15 @@ public:
 			int inputOption = inputCheck(optionLimit);
 			switch (inputOption) {
 			case 1:
+				looping = false;
 				break;
 			case 2:
+				looping = false;
 				add = false;
 				deleteLetters = true;
 				break;
 			case 3:
+				looping = false;
 				add = false;
 				break;
 			}
@@ -427,41 +476,60 @@ public:
 		if (add == true) {
 			bool nooverLaps = false;
 			while (true) {
-				cout << "What are the yellow letter words? (*Note: The letters that are in the mystery word)" << endl;
+				cout << endl << "What are the yellow letter words? (*Note: The letters that are in the mystery word)" << endl;
 				cout << "Enter them without spaces. Example: ABCED" << endl;
 				newyellowLetter = getLettersOnly();
 				newyellowLetter = capitalRemover(newyellowLetter);
 				string cleanWord;
+				unordered_set<char> allLetters;
+				bool repeatingLetter = false;
 				for (char c : newyellowLetter) {
 					if (!ispunct(static_cast<unsigned char>(c))) {
 						cleanWord += c;
 					}
+					if (allLetters.count(c) > 0) {
+						repeatingLetter = true;
+						break;
+					}
+					allLetters.insert(c);
+
+				}
+				if (repeatingLetter == true) {
+					cout << endl << "Try again with out repeating letters" << endl;
+					continue;
 				}
 
 				newyellowLetter = cleanWord;
 
 				nooverLaps = checkLetters(newyellowLetter, yellowLetters);
 				nooverLaps = checkLetters(newyellowLetter, greyLetters);
-				if (nooverLaps == true) {
+				if (nooverLaps == false) {
+					yellowLetters.append(newyellowLetter);
+					parameter = true;
 					break;
 				}
-				cout << endl << "The words you inputed already exists in yellow Letters or grey Letters;"<<endl;
+				if (nooverLaps == true) {
+					cout << endl << "The words you inputed already exists in yellow Letters or grey Letters" << endl;
+					break;
+				}
+
 			}
-			yellowLetters.append(newyellowLetter);
-			parameter = true;
+
 		}
 		if (deleteLetters == true) {
+			cout << endl << "All Yellow letters cleared" << endl;
 			yellowLetters = "";
 		}
 	}
 	void getgreenLetters() {
-	
+
 		bool add = true;
 		bool looping = true;
 		bool deleteLetters = false;
 		bool samePosition = false;
+		bool nooverLaps = false;
 		char newgreenLetter;
-		int position;		
+		int position;
 		cout << endl << "Mystery Word Length = " << getmysteryLength() << endl;
 		cout << endl << "Yellow letters = (";
 		for (char c : yellowLetters) {
@@ -473,8 +541,15 @@ public:
 			cout << c << ", ";
 		}
 		cout << ")" << endl;
+		cout << endl << "Green letters:" << endl << "Letter" << "    " << "Position" << endl;
+		for (int i = 0; i < positionNumber.size(); i++) {
+			int positionLetter = positionNumber[i];
+			char letter = greenLetters[i];
+
+			cout << "-" << letter << "           -" << positionLetter << endl;
+		}
 		while (looping == true) {
-			cout << "Enter '1' to Add green letters" << endl;
+			cout << endl << "Enter '1' to Add green letters" << endl;
 			cout << "Enter '2' to clear all green letters" << endl;
 			cout << "Enter '3' to Exit" << endl;
 
@@ -490,15 +565,15 @@ public:
 					cout << endl << "All positions are occupied." << endl;
 					break;
 				}
-			
+
 				while (true) {
-					cout << "What position is the green letter in?(*Note: the length of the mystery word is: " << getmysteryLength() << endl;
+					cout << endl << "What position is the green letter in?(*Note: the length of the mystery word is: " << getmysteryLength() << ")" << endl;
 					cout << "Enter only intergers. Example: '2'" << endl;
 					position = getpositionNumber();
 
 					bool exist = false;
-					for (auto pos: positionNumber) {
-						if (position== pos) {
+					for (auto pos : positionNumber) {
+						if (position == pos) {
 							samePosition = true;
 							break;
 						}
@@ -508,49 +583,65 @@ public:
 
 						break;
 					}
-					cout << endl << "The letter you inputed already exists in grey Letters;" << endl;
+					if (samePosition == true) {
+						cout << endl << "That position already has a letter assigned" << endl;
+						break;
+					}
+
 				}
-				bool nooverLaps = false;
+				if (samePosition == true) {
+					break;
+				}
+				nooverLaps = false;
 				while (true) {
-					cout << "What is the green letter words? (*Note: The letters that are in the mystery word and are in the correct position)" << endl;
+					cout << endl << "What is the green letter words? (*Note: The letters that are in the mystery word and are in the correct position)" << endl;
 					cout << "Enter only one letter. Example: 'A'" << endl;
 					newgreenLetter = getLetter();
 
-					bool exist = false;
 					for (char c : greyLetters) {
-						if (c == newgreenLetter) {							
+						if (c == newgreenLetter) {
+							nooverLaps = false;
 							break;
 						}
 						nooverLaps = true;
 					}
 					if (nooverLaps == true) {
+						positionNumber.push_back(position);
+
+
+						greenLetters.push_back(newgreenLetter);
+						remainingPostion -= 1;
+						parameter = true;
+						looping = false;
 						break;
 					}
-					cout << endl << "The letter you inputed already exists in grey Letters;" << endl;
+					if (nooverLaps == false) {
+						cout << endl << "The letter you inputed already exists in grey Letters" << endl;
+						break;
+					}
+
 				}
 
-				positionNumber.push_back(position);
 
-
-				greenLetters.push_back(newgreenLetter);
-				remainingPostion -= 1;
-				parameter = true;
 				break;
-			case 2:			
+			case 2:
+				looping = false;
 				deleteLetters = true;
 				break;
-			case 3:				
+			case 3:
+				looping = false;
 				break;
 			}
 
-		}		
-			
+		}
+
 		if (deleteLetters == true) {
+			cout << endl << "All Green letters cleared" << endl;
 			greenLetters = "";
 			positionNumber.clear();
 		}
-	
-	
+
+
 	}
 	int getmysteryLength() {
 		return mysterywordLength;
@@ -561,120 +652,130 @@ public:
 
 
 
-bool checkLetters(string inputString, string existingString) {
+	bool checkLetters(string inputString, string existingString) {
 
-	bool exist = false;
-	for (char c : inputString) {
+		bool exist = false;
+		for (char c : inputString) {
 
-		for (char e : existingString) {
-			if (e == c) {
-				exist = true;
-				break; 
+			for (char e : existingString) {
+				if (e == c) {
+					exist = true;
+					break;
+				}
 			}
-		}
-		if (exist == true) {
-			break;
-		}
-	}
-	return exist;
-}
-char getLetter() {
-	char letter;
-	while (true) {
-		cin >> letter;
-		letter = tolower(letter);
-		if (letter >= 'a' && letter <= 'z') {
-			break;
-		}
-		else {
-			cout << endl << "Invalid input!!! Enter a vaild single letter" << endl;
-		}
-	}
-	return letter;
-
-}
-int getpositionNumber() {
-
-	bool correctInput = false;
-	int input;
-	while (correctInput == false) {
-		if (cin >> input) {
-			if (input <= getmysteryLength() && input > 0) {
-				correctInput = true;
+			if (exist == true) {
 				break;
-			}	
-			cout << endl << "Position of the letter need to be more than 0 and less then or equal to the length of the mystery word" << endl;
+			}
 		}
-		else {
-			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			cout << "Please input the valid number corrosponding to the option you want to choose!!!" << endl << endl;
-
-
-		}
+		return exist;
 	}
-	return input;
-}
-
-void findmysteryWords() {
-	string wordName;
-	bool greyLetterExist;
-	bool yellowLetterExist;
-	bool greenLetterExist;
-	if (parameter == true) {
-		cout << endl << "Potential";
-		for (Word word : Dictionary) {
-			wordName = word.getWordName();
-			if (getmysteryLength() != wordName.length()) {
-				continue;
+	char getLetter() {
+		char letter;
+		while (true) {
+			cin >> letter;
+			letter = tolower(letter);
+			if (letter >= 'a' && letter <= 'z') {
+				break;
 			}
-			if (!greyLetters.empty()) {
-				greyLetterExist = false;  
-				if (checkLetters(wordName, greyLetters) == true) {
-					greyLetterExist = true;
+			else {
+				cout << endl << "Invalid input!!! Enter a vaild single letter" << endl;
+			}
+		}
+		return letter;
+
+	}
+	int getpositionNumber() {
+
+		bool correctInput = false;
+		int input;
+		while (correctInput == false) {
+			if (cin >> input) {
+				if (input <= getmysteryLength() && input > 0) {
+					correctInput = true;
 					break;
 				}
+				cout << endl << "Position of the letter need to be more than 0 and less then or equal to the length of the mystery word which is: (" << getmysteryLength() << ")" << endl;
 			}
-			if (greyLetterExist == true) {
-				continue;
-			}
-			if (!yellowLetters.empty()) {
-				yellowLetterExist = true;
-				if (checkLetters(wordName, yellowLetters) == false) {
-					yellowLetterExist = false;
-					break;
-				}
-			}
-			if (yellowLetterExist == false) {
-				continue;
-			}
-			if (!greenLetters.empty() && !positionNumber.empty()) {
-				greenLetterExist = true;
-				for (char c : wordName) {
+			else {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Please input the valid number corrosponding to the option you want to choose!!!" << endl << endl;
 
-					for (char e : greenLetters) {
-						if (e == c) {
-							greenLetterExist = true;
+
+			}
+		}
+		return input;
+	}
+
+	void findmysteryWords() {
+		string wordName;
+		bool greyLetterExist = false;
+		bool yellowLetterExist = true;
+		bool greenLetterExist = true;
+		bool wordFound = false;
+		int position;
+		char letter;
+		if (parameter == true) {
+			cout << endl << "Potential mystery words: " << endl;
+			for (Word word : Dictionary) {
+				wordName = word.getWordName();
+				if (getmysteryLength() != wordName.length()) {
+					continue;
+				}
+				if (!greyLetters.empty()) {
+					greyLetterExist = checkLetters(wordName, greyLetters);
+
+				}
+				if (greyLetterExist == true) {
+					continue;
+				}
+				if (!yellowLetters.empty()) {
+					for (char c : yellowLetters) {
+						yellowLetterExist = false;
+						for (char e : wordName) {
+							if (e == c) {
+								yellowLetterExist = true;
+
+							}
+						}
+						if (yellowLetterExist == false) {
 							break;
 						}
 					}
-					if (greenLetterExist == true) {
-						break;
-					}
-				}
-				
-			}
-			if (greenLetterExist == false) {
-				continue;
-			}
-			cout <<"";
-		}
-	}
-	else {
-		cout << "Please input the parameters before searching for words!!!" << endl << endl;
-	}
 
-}
+				}
+				if (yellowLetterExist == false) {
+					continue;
+				}
+				if (!greenLetters.empty() && !positionNumber.empty()) {
+
+					for (int i = 0; i < positionNumber.size(); i++) {
+						greenLetterExist = true;
+						position = positionNumber[i] - 1;
+						letter = greenLetters[i];
+						if (wordName[position] != letter) {
+							greenLetterExist = false;
+							break;
+						}
+					}
+
+				}
+				if (greenLetterExist == false) {
+					continue;
+				}
+
+				cout << wordName << endl;
+				wordFound = true;
+			}
+		}
+		else {
+			cout << "Please input the parameters before searching for words!!!" << endl << endl;
+		}
+		if (wordFound == false) {
+			cout << endl << "No word found that matches the parameters" << endl;
+		}
+
+	}
 
 };
 

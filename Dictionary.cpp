@@ -306,7 +306,7 @@ void Dictionary::addWord() {
 
 string Dictionary::getLettersOnly() {
 	string nameInput;
-	
+
 	while (true) {
 		bool onlyLetter = true;
 		getline(cin >> ws, nameInput);

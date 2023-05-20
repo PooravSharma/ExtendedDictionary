@@ -51,7 +51,7 @@ int main()
 			dictionary.guessfourthWord();
 			break;
 		case 7:
-			dictionary.addWord();
+			dictionary.cheatatSearchdle();
 			break;
 		case 8:
 			dictionary.fileChoice();

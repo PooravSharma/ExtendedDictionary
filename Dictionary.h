@@ -15,10 +15,10 @@ class Dictionary
 {
 protected:
 	vector <Word> Dictionary;
-	int wordCount =0;
-	bool loadedDictionary = false;	
+	int wordCount = 0;
+	bool loadedDictionary = false;
 
-public:	
+public:
 	void fileChoice();
 
 	void TextFileReader(string fileName);
