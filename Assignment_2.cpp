@@ -5,11 +5,11 @@ using namespace std;
 
 
 int main()
-{
+{//only uses extended dictionary to call on all the neaded functions 
 	ExtendedDictionary dictionary;
 	bool loopingMenu = true;
 	int inputOption;
-
+	//Task 01
 	cout << "Hi!! Input the name for the dictionary you want to load." << endl;
 	dictionary.fileChoice();
 
@@ -27,7 +27,7 @@ int main()
 
 		int optionLimit = 10;
 		inputOption = dictionary.inputCheck(optionLimit);
-
+		//detailed function description in the class it belongs in
 		switch (inputOption) {
 		case 1:
 			//Task 02 method
@@ -42,18 +42,23 @@ int main()
 			dictionary.addWord();
 			break;
 		case 4:
+			//Task 05 - Palindromes
 			dictionary.palindromeFinder();
 			break;
 		case 5:
+			//Task 06 - Rhyming words 
 			dictionary.rhymingwordsFinder();
 			break;
 		case 6:
+			//Task 07 - Guess the fourth word
 			dictionary.guessfourthWord();
 			break;
 		case 7:
+			//Task 08 - Cheat at Searchdle
 			dictionary.cheatatSearchdle();
 			break;
 		case 8:
+			//Task 1 method
 			dictionary.fileChoice();
 			break;
 		case 9:

@@ -1,7 +1,9 @@
+//Created a new class called ExtendedDictionary it will se the functions from its parent class to load and manage the Vector of Words, and perform Assignment 1 functionality
 #ifndef EXTENDEDDICTIONSRY_H
 #define EXTENDEDDICTIONSRY_H 
 #include "Dictionary.h"
 #include <unordered_set>
+//using inheritance from the Dictionary 
 class ExtendedDictionary : public Dictionary
 {
 private:
@@ -15,7 +17,9 @@ private:
 	bool parameter;
 public:
 
-
+	// Task 05 - Palindromes - List all words in the dictionary that are palindromes. e.g .”civic”
+	//this function goes through each word and reverses the name. if the reverse name and normal name equls the same it will print the word.
+	//it would single letter words too so i changed it so that the minimum word length is more than 2.
 	void palindromeFinder() {
 		cout << endl << "Finding all the palindrome in the dictionary...." << endl;
 		string wordName;
@@ -34,7 +38,11 @@ public:
 
 
 	}
-
+	//Task 06 - Rhyming words – prompt the user to enter a word and print all words from the
+	//dictionary that end in the same sequence of three letters as the entered word.
+	// the user inputs a word (string). the length of the word need to be atleast 4 long
+	// it gets the last three letter of the word and looks through the dictionary to find words with matching last three letters
+	// it outputs all the words with the same last three letters 
 	void rhymingwordsFinder() {
 		string searchedWord;
 		string wordName;
@@ -72,7 +80,11 @@ public:
 
 
 	}
-
+	//Task 07 - Guess the fourth word 
+	// randomly picks a word from the dictionary
+	// the definition of the word will have its fourth word hidden for the user to guess
+	// if the user guesses correctly then they are awarded 10 points. if they guess wrong it is gameover.
+	// it outputs score of the user and the hightscore.
 	void guessfourthWord() {
 		cout << "Welcome to the guess the fourth word" << endl;
 		cout << "High Score = " << gethighScore() << endl;
@@ -96,7 +108,10 @@ public:
 			}
 		}
 	}
-
+	//ask 08 - Cheat at Searchdle
+	//the user can set the grey, yellow and green letters. Along with the length of the mystery word
+	//the user can choose to show all the potential words the mystery word can be. 
+	// it outputs words that are with in the set parameter of the coloured letters. 
 	void cheatatSearchdle() {
 		setmysteryLength(0);
 		greyLetters = "";
@@ -176,13 +191,20 @@ public:
 		}
 
 	}
-
+	//a get method for high score
+	//was no need for it as the variable have no use anywhere else
+	//i still wanted to try using method 
 	int gethighScore() {
 		return hightScore;
 	}
 	void sethighScore(int score) {
 		hightScore = score;
 	}
+
+	//the function that is used in the guess the fourth word.
+	//this fuction will output a random word and show its definition. the defintion will have its fourth word hidden for the user to guess.
+	//some words have more than 1 defintion so it was a little tricky but i made it so that the definition with atleast 4 words will have its word blanked.
+
 	void guessGame() {
 		bool guessing = true;
 		int score = 0;
@@ -232,7 +254,7 @@ public:
 			if (nofourthWord == true) {
 				continue;
 			}
-
+			//used to get rid of any special characters i.e *, ; ,() stuck to the word
 			string cleanWord;
 			for (char c : correctWord) {
 				if (!ispunct(static_cast<unsigned char>(c))) {
@@ -289,7 +311,7 @@ public:
 			cout << "High Score: " << gethighScore() << endl;
 		}
 	}
-
+	//generates a random word from 0 to the wordcount-1. it is subtracted by one so that when used in vectors it will not go out of bounds.
 	int randomNumberGenerator() {
 		srand(time(NULL));
 		int randomNumber = (rand() / double(RAND_MAX)) * wordCount;
@@ -300,7 +322,7 @@ public:
 
 		return randomNumber;
 	}
-
+	//functionn is used to set the length of the mystery word
 	void setmysteryLength() {
 
 		bool change = true;
@@ -349,6 +371,7 @@ public:
 		}
 
 	}
+	//used to list grey letters as parameter
 	void getgreyLetters() {
 		bool add = true;
 		bool looping = true;
@@ -435,6 +458,7 @@ public:
 
 
 	}
+	//used to list yellow letters as parameter
 	void getyellowLetters() {
 		bool add = true;
 		bool looping = true;
@@ -521,6 +545,7 @@ public:
 			yellowLetters = "";
 		}
 	}
+	//used to list green letters as parameter
 	void getgreenLetters() {
 
 		bool add = true;
@@ -643,6 +668,7 @@ public:
 
 
 	}
+	//use to get and set the length of the myster word's length 
 	int getmysteryLength() {
 		return mysterywordLength;
 	}
@@ -651,7 +677,9 @@ public:
 	}
 
 
-
+	//checks whether or not the strings have similar letters
+	//it returns true if does have similar letter in the two words
+	//it reurns false of no letter are same in the two words
 	bool checkLetters(string inputString, string existingString) {
 
 		bool exist = false;
@@ -669,6 +697,8 @@ public:
 		}
 		return exist;
 	}
+
+	// askes input for one char letter 
 	char getLetter() {
 		char letter;
 		while (true) {
@@ -684,6 +714,7 @@ public:
 		return letter;
 
 	}
+	// askes to input the position of the green word
 	int getpositionNumber() {
 
 		bool correctInput = false;
@@ -706,7 +737,8 @@ public:
 		}
 		return input;
 	}
-
+	//this function is used to search for the word within the parameter set.
+	// it will output all the potential myster word that match the parameter.
 	void findmysteryWords() {
 		string wordName;
 		bool greyLetterExist = false;
